@@ -54,13 +54,13 @@ static char piece6[5][5] = {{E,E,E,E,E},
                             {E,E,E,E,E},
                             {E,E,E,E,E}};
 
-static int colors[] = { 0xFF0000,
-                        0x00FF00,
-                        0x0000FF,
-                        0xFFFF00,
-                        0xFF00FF,
-                        0x00FFFF,
-                        0xFFFFFF };
+static int colors[] = { 0xFF0000FF,
+                        0x00FF00FF,
+                        0x0000FFFF,
+                        0xFFFF00FF,
+                        0xFF00FFFF,
+                        0x00FFFFFF,
+                        0xFFFFFFFF};
 
 char currPiece[5][5];
 char nextPiece[5][5];
@@ -121,13 +121,13 @@ void initStack() {
     for (int j = 0; j < H - 1; j++) {
         for (int i = 0; i < W; i++) {
             if (i == 0 || i == W - 1)
-                map[i][j] = 0x55555555;
+                map[i][j] = 0x555555FF;
             else
-                map[i][j] = 0x00000000;
+                map[i][j] = 0x000000FF;
         }
     }
     for (int i = 0; i < W; i++) {
-        map[i][H - 1] = 0x55555555;
+        map[i][H - 1] = 0x555555FF;
     }
 
     score = 0;
@@ -207,7 +207,7 @@ void castShadow()
             rect.x = (i+pieceX)*BLOCKSIZE;
             rect.y = (j+pieceY)*BLOCKSIZE;
             rect.w = rect.h = BLOCKSIZE;
-            SDL_SetRenderDrawColor(renderer, 0x33, 0x33, 0x33, 0x33);
+            SDL_SetRenderDrawColor(renderer, 0x33, 0x33, 0x33, 0xFF);
             SDL_RenderFillRect(renderer, &rect);
         }
     }
@@ -367,8 +367,6 @@ void drawStack()
 
 void drawAll()
 {
-    SDL_SetRenderDrawColor(renderer, 0x99, 0x99, 0x99, 0x99);
-
     drawStack();
     castShadow();
     drawPiece();
@@ -406,7 +404,7 @@ void initSDL()
 
     window = SDL_CreateWindow("SDLTRIS", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED ,WIDTH, HEIGHT, 0);
 
-    renderer = SDL_CreateRenderer(window, -1, 0);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE | SDL_RENDERER_PRESENTVSYNC);
 }
 
 int loopGame()
